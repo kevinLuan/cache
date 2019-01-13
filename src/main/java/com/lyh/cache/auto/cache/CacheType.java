@@ -1,7 +1,7 @@
 package com.lyh.cache.auto.cache;
 
 import com.google.common.cache.Cache;
-import com.look.common.serialize.api.json.JacksonSerialize;
+import com.lyh.cache.encoder.JsonSerialize;
 
 public interface CacheType {
   /**
@@ -64,7 +64,7 @@ public interface CacheType {
     if (param == null) {
       cacheKey = "null";
     } else {
-      cacheKey = JacksonSerialize.INSTANCE.encode(param);
+      cacheKey = JsonSerialize.encode(param);
     }
     return cacheKey;
   }

@@ -4,8 +4,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.look.common.exception.ErrorCode;
-import com.look.common.exception.SystemException;
 import com.lyh.cache.annotation.Cached;
 import com.lyh.cache.annotation.Constants;
 import com.lyh.cache.auto.client.JedisClientApi;
@@ -43,7 +41,7 @@ public class CachedProcess {
       if (counter.incrementAndGet() > 3) {
         CacheLogger.getLogger().error("prefix:cache_penetration|concurrent.call:{}|cache_key:{}",
             pjp.toLongString(), key);
-        throw new SystemException(ErrorCode.CONCURRENT_CACHE_KEY_TIMEOUT);
+        throw new RuntimeException("concurrent cache key timeout");
       }
       return concurrentLock.getExecute(key).run(new Execute<Object>() {
         @Override

@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.CacheLoader.InvalidCacheLoadException;
-import com.look.common.exception.ErrorCode;
-import com.look.common.exception.ExceptionUtils;
-import com.look.common.exception.SystemException;
 import com.lyh.cache.auto.client.JedisClientApi;
 import com.lyh.cache.auto.gener.KeyGener;
+import com.lyh.cache.error.NotSupportException;
 import com.lyh.cache.utils.CacheLogger;
 
 // @Scope("prototype")
@@ -56,17 +54,11 @@ public class CacheFactory {
         return null;
       });
     } catch (Exception e) {
-      if (ExceptionUtils.isUserDefinedException(e)) {
-        SystemException systemException = ExceptionUtils.getUserDefinedException(e);
-        if (systemException != null) {
-          throw systemException;
-        }
-      }
       if (isRtnNull(e)) {
         return null;
       }
       CacheLogger.error("加载type:`" + type + "`,cacheKey:`" + cacheKey + "`数据出错", e);
-      throw ErrorCode.SYSTEM_ERROR.throwError(type.defineErrorTip());
+      throw new RuntimeException(type.defineErrorTip());
     }
   }
 
@@ -117,17 +109,11 @@ public class CacheFactory {
         }
       });
     } catch (Exception e) {
-      if (ExceptionUtils.isUserDefinedException(e)) {
-        SystemException systemException = ExceptionUtils.getUserDefinedException(e);
-        if (systemException != null) {
-          throw systemException;
-        }
-      }
       if (isRtnNull(e)) {
         return null;
       }
       CacheLogger.error("加载type:`" + keyGener.getType() + "`,cacheKey:`" + cacheKey + "`数据出错", e);
-      throw ErrorCode.SYSTEM_ERROR.throwError(keyGener.getType().defineErrorTip());
+      throw new RuntimeException(keyGener.getType().defineErrorTip());
     }
   }
 
@@ -155,7 +141,7 @@ public class CacheFactory {
     if (type.getRedisOption() == RedisOption.HSET) {
       return type.getRedisOption().delete(KeyGener.make(this, type, null));
     } else {
-      throw ErrorCode.NOT_SUPPORT_OPERATOR.throwError("当前CacheType:`" + type + "`不支持该操作");
+      throw new NotSupportException("当前CacheType:`" + type + "`不支持该操作");
     }
   }
 
