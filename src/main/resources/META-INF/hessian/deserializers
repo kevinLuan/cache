@@ -1,0 +1,2 @@
+#增加了序列化和反序列化BigDecimal的支持
+java.math.BigDecimal=com.caucho.hessian.io.BigDecimalDeserializer
