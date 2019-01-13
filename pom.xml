@@ -6,7 +6,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.2.RELEASE</version>
 	</parent>
-	<groupId>com.look</groupId>
+	<groupId>com.lyh</groupId>
 	<artifactId>cache</artifactId>
 	<version>1.0.3.RELEASE</version>
 	<!--<version>1.0.3-SNAPSHOT</version>-->
@@ -116,16 +116,15 @@
 			</plugin>
 		</plugins>
 	</build>
+	<!-- 私服地址 -->
 	<distributionManagement>
-		<repository>
-			<id>releases</id>
-			<name>Nexus Release Repository</name>
-			<url>https://nexus.ilovelook.cn/repository/maven-releases/</url>
-		</repository>
 		<snapshotRepository>
-			<id>nexus-snapshot</id>
-			<name>nexus-snapshot</name>
-			<url>https://nexus.ilovelook.cn/repository/maven-snapshots/</url>
+			<id>sonatype-nexus-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
+		<repository>
+			<id>sonatype-nexus-releases</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
 	</distributionManagement>
 </project>
